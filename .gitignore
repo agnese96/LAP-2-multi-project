@@ -32,3 +32,4 @@ node_modules
 \.watchmanconfig
 
 \.expo/settings\.json
+.expo/settings.json

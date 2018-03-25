@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     //alignContent: 'space-between', NON FUNZIONA -> LEGGERE DOC
-    backgroundColor: "mediumseagreen",
+    backgroundColor: "#b0c4de",
     /* allignContent inserisce un minimo di padding ma ne vogliamo di più */
     padding: 10
   }
