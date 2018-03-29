@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, ScrollView } from 'react-native';
+import DayWeather from './Components/DayWeather'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -17,7 +18,7 @@ export default class App extends React.Component {
   render() {
     return (
       <ScrollView contentContainerStyle={styles.container}>
-        {this.WeatherData.map(obj => <DayWeather data={obj} />)}
+        {this.WeatherData.map(obj => <DayWeather data={obj} key={obj.date}/>)}
       </ScrollView>
     );
   }

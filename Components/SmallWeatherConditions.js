@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyelSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text} from 'react-native';
 
 export default class SmallWeatherConditions extends React.Component {
     render() {

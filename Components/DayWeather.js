@@ -1,5 +1,10 @@
 import React from 'react';
 import {StyleSheet, View, Text, Image} from 'react-native';
+import Day from './Day';
+import WeatherIcon from './WeatherIcon';
+import SmallWeatherConditions from './SmallWeatherConditions'
+
+
 
 export default class DayWeather extends React.Component {
    /* L'oggetto "data" passato in App.js è contenuto dentro props il quale è

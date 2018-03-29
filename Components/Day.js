@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyelSheet, View, Text, Image} from 'react-native';
+import {StyleSheet, View, Text, Image} from 'react-native';
 import UtilDate from './UtilDate.js';
 
 export default class Day extends React.Component {
