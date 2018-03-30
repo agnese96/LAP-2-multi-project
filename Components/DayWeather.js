@@ -11,7 +11,7 @@ export default class DayWeather extends React.Component {
    presente dato che estendiamo "React.Component" */
     render() {
         return(
-            <View>
+            <View style = {styles.container} >
                 <Day date={this.props.data.date}/>
                 <WeatherIcon condition={this.props.data.condition}/>
                 <SmallWeatherConditions 
@@ -23,3 +23,15 @@ export default class DayWeather extends React.Component {
         ) 
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        flexDirection: 'row',
+        // margin: 5,
+        marginHorizontal: 25,
+        // padding: 5,
+        justifyContent: 'space-between',
+        // justifyContent: 'center',
+    },
+});
