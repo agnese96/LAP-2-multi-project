@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import DayWeather from './Components/DayWeather'
+
+import DayWeather from './Components/DayWeather';
+import WeatherDetails from './Components/WeatherDetails';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -14,13 +16,22 @@ export default class App extends React.Component {
       { condition: 'rain', date: '04/01/2018', min: 7.3, max: 16.4, humidity: 64 },
       { condition: 'snow', date: '04/02/2018', min: 2.5, max: 11.1, humidity: 39 }
     ];
+    this.WeatherDetails = { condition: 'rain', date: '03/27/2018', min: 7.6, max: 17.3, humidity: 56 , location: 'San Francisco'};
+    
   }
   render() {
-    return (
+    // RETURN PER LISTA 
+    /* return (
       <View style={styles.container}>
         {this.WeatherData.map(obj => <DayWeather data={obj} key={obj.date}/>)}
       </View>
-    );
+    ); */
+    // RETURN PER DETTAGLI
+    return (
+      <View style={styles.container}>
+        <WeatherDetails data={this.WeatherDetails}/>
+      </View>
+    )
   }
 }
 
@@ -30,6 +41,6 @@ const styles = StyleSheet.create({
     marginTop: 25,
     backgroundColor: '#fff',
     alignItems: 'stretch',
-    justifyContent: 'center',
+    //justifyContent: 'center',
   },
 });
