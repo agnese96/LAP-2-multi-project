@@ -16,8 +16,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
         alignItems: 'flex-end',
         justifyContent: 'flex-end',
-        flex: 2,
+        //flex: 2,
         paddingTop: 20,
+        height: 200,
     },
     resultText: {
         color: 'white',
