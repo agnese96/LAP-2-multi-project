@@ -1,12 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 
-import Font from 'expo'
+import { Font } from 'expo'
 
 export default class App extends React.Component {
   state = {
-    loading: true,
-    fontLoaded: true
+    fontLoaded: false
   }
   async componentDidMount() {
     await Font.loadAsync({
@@ -14,15 +13,14 @@ export default class App extends React.Component {
       "pacifico-regular" : require('./assets/fonts/Pacifico-Regular.ttf')
     })
     this.setState({fontLoaded: true});
-    //setTimeout(()=> this.setState({loading: false}), 2000);
   }
   render() {
     return (
       <View style={styles.container}>
         {this.state.fontLoaded ? (
-          <ActivityIndicator size="large" color="blue"/>
+          <Text style={{ fontFamily: 'pacifico-regular' }}>Less is more</Text>
         ) : (
-            <Text style={{fontFamily: 'pacifico-regular'}}>Open up App.js to start working on your app!</Text>
+            <ActivityIndicator size="large" color="grey" />            
         )}
       </View>
     );
