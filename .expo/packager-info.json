@@ -1,8 +1,8 @@
 {
   "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 10468,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
+  "packagerPort": 19002,
+  "packagerPid": 20052,
+  "expoServerNgrokUrl": "https://7m-e53.agnese96.lap-2-multi-project.exp.direct",
+  "packagerNgrokUrl": "https://packager.7m-e53.agnese96.lap-2-multi-project.exp.direct",
+  "ngrokPid": 20118
 }
