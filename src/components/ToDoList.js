@@ -7,11 +7,8 @@ export default class ToDoList extends Component {
   /* Nelle funzioni statiche il this non esiste, pertanto
   usiamo i parametri all'interno di navigation */
   static navigationOptions = ({navigation}) => {
-    /* Il giusto ordine di renderizzazione è prima ToDoList e dopo navigationOptions. Ciò 
-    però non è garantito e, pertanto, per evitare un params=undefined si inserisce "|| {}" */
+
     const params = navigation.state.params || {}
-    /* Siamo costretti a utilizzare i parametri presenti in navigation perché, non essendoci 
-    il this, è l'unico modo per accedere alle funzioni e alle proprietà (oggetti) di ToDoList */
     
     return ({
       title: 'To-Do list',
@@ -37,43 +34,29 @@ export default class ToDoList extends Component {
     this.props.navigation.setParams({ onAddTask: this._createTask })
   }
 
-  _createTask = task => {
-    //console.log(task)
-    const listOfTasks2 = [...this.state.listOfTasks]
-    //push l'equivalente di append
-    task.id = this.state.lastId+1;
-    listOfTasks2.push(task);
-    this.setState({
-      listOfTasks: listOfTasks2,
-      lastId: (this.state.lastId+1)
-    });
-    AsyncStorage.setItem('todolist', JSON.stringify(this.state.listOfTasks));
-    AsyncStorage.setItem('lastid', task.id)
-  }
-
   //cosa fare dopo che il componente in cui siamo viene caricato
   componentDidMount() {
-    AsyncStorage.getItem('lastid').then(response => this.setState({
-      lastId: response ? JSON.parse(response) : 0
+    let lastId = 0
+    AsyncStorage.getItem('lastid').then(response => lastId = response ? JSON.parse(response) : 0)
+    AsyncStorage.getItem('todolist').then(response => this.props.init({
+      list: response ? JSON.parse(response) : [],
+      lastId
     }))
-    AsyncStorage.getItem('todolist').then(response => this.setState({
-      listOfTasks: response ? JSON.parse(response) : [],
+    this.setState({
       loading: false
-    }))
-
+    });
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      listOfTasks: [],
       loading: true,
     }
-    this._createTask.bind(this)
   }
 
   render() {
-    const {listOfTasks, loading} = this.state;
+    const {loading} = this.state;
+    const {listOfTasks} = this.props
     return (
       <View style={styles.container}>
         {
@@ -86,34 +69,10 @@ export default class ToDoList extends Component {
           />
         }
       </View>
-    
     );
   }
 
-  _takeTasks() {
-    try {
-      const tasks = require("../data/tasks.json");
-      //la map trasforma l'array di oggetti in un array di interi (id)
-      const lastId = Math.max(...tasks.map(t => t.id));
-      //console.log(lastId);
-      this.setState({
-        listOfTasks: tasks,
-        loading: false,
-        lastId: lastId
-      })
-    }
-    catch (err){
-      console.log("something went wrong!");
-      console.error(err);
-    }
-  }
-
-  _goToAddTask = () => {
-    console.log("pressed +");
-  }
-
   _renderTask = ({item}) => {
-    //console.log(item)
     return(
         <ToDo item={item} onToggle={this._toggleTask} onEdit={ () => {
           this.props.navigation.navigate('EditToDo', {onEdit: this._onEdit, task:item})
@@ -121,27 +80,20 @@ export default class ToDoList extends Component {
     )
   }
 
+  _createTask = task => {
+    const lastId = this.props.lastId + 1;
+    this.props.addTodo(task, lastId);
+    AsyncStorage.setItem('todolist', JSON.stringify(this.props.listOfTasks));
+    AsyncStorage.setItem('lastid', lastId);
+  }
+
   _onEdit = task => {
-    //Copia/spread dell'array listOfTask in modo tale da averlo fuori da state
-    const listOfTasks2 =  [...this.state.listOfTasks];
-    //L'arrow function è necessaria perché lui non sa quale proprietà deve essere uguale a id
-    index = listOfTasks2.findIndex(t => t.id == task.id);
-    listOfTasks2[index] = task;
-    this.setState({
-        listOfTasks: listOfTasks2
-    });
+    this.props.editTodo(task);
     AsyncStorage.setItem('todolist', JSON.stringify(this.state.listOfTasks));
   }
 
   _toggleTask = (id) => {
-    //Copia/spread dell'array listOfTask in modo tale da averlo fuori da state
-    const listOfTasks2 =  [...this.state.listOfTasks];
-    //L'arrow function è necessaria perché lui non sa quale proprietà deve essere uguale a id
-    index = listOfTasks2.findIndex(t => t.id == id);
-    listOfTasks2[index].done = !listOfTasks2[index].done;
-    this.setState({
-        listOfTasks: listOfTasks2
-    });
+    this.props.toggleTodo(id)
     AsyncStorage.setItem('todolist', JSON.stringify(this.state.listOfTasks));
   }    
   _renderSeparator() {
