@@ -12,10 +12,10 @@ export default function todolistReducer(state = initialState, action) {
                 listOfTasks: action.list,
                 lastId: action.lastId
             }
-        case ADD_TODO:
+        case ADD_TODO:            
             return {
                 listOfTasks : [...state.listOfTasks, action.task],
-                lastId: action.id
+                lastId: action.task.id
             }
         case TOGGLE_TODO:
             return {

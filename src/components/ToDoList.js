@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {  FlatList, StyleSheet, View, ActivityIndicator, Button, AsyncStorage } from 'react-native';
 
-import ToDo from './ToDo'
+import ToDo from '../containers/ToDo';
 
 export default class ToDoList extends Component {
   /* Nelle funzioni statiche il this non esiste, pertanto
@@ -30,21 +30,33 @@ export default class ToDoList extends Component {
   }
 
   componentWillMount() {
-    /* Aggiungiamo il parametro onAddTast il cui unico scopo è richiamare createTask  */
-    this.props.navigation.setParams({ onAddTask: this._createTask })
+
   }
 
   //cosa fare dopo che il componente in cui siamo viene caricato
   componentDidMount() {
-    let lastId = 0
-    AsyncStorage.getItem('lastid').then(response => lastId = response ? JSON.parse(response) : 0)
-    AsyncStorage.getItem('todolist').then(response => this.props.init({
-      list: response ? JSON.parse(response) : [],
-      lastId
-    }))
-    this.setState({
-      loading: false
-    });
+    /* Aggiungiamo il parametro onAddTast il cui unico scopo è richiamare createTask  */
+    this.props.navigation.setParams({ onAddTask: this._createTask });
+    AsyncStorage.getItem('lastid')
+      .then(response => {
+        console.log('1', response);
+        let lastId = response ? JSON.parse(response) : 0;
+        AsyncStorage.getItem('todolist').then(response => {
+          this.props.init({
+            list: response ? JSON.parse(response) : [],
+            lastId
+          })
+          console.log('2', response);
+          this.setState({
+            loading: false
+          });
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+        lastId = 0
+      })
+
   }
 
   constructor(props) {
@@ -81,20 +93,22 @@ export default class ToDoList extends Component {
   }
 
   _createTask = task => {
-    const lastId = this.props.lastId + 1;
-    this.props.addTodo(task, lastId);
-    AsyncStorage.setItem('todolist', JSON.stringify(this.props.listOfTasks));
-    AsyncStorage.setItem('lastid', lastId);
+    this.componentDidMount();
+    task.id = this.props.lastId + 1;
+    this.props.addTodo(task);
+    AsyncStorage.setItem('todolist', JSON.stringify(this.props.listOfTasks))
+                .catch(err => console.error(err));
+    AsyncStorage.setItem('lastid', task.id);
   }
 
   _onEdit = task => {
     this.props.editTodo(task);
-    AsyncStorage.setItem('todolist', JSON.stringify(this.state.listOfTasks));
+    AsyncStorage.setItem('todolist', JSON.stringify(this.props.listOfTasks));
   }
 
   _toggleTask = (id) => {
     this.props.toggleTodo(id)
-    AsyncStorage.setItem('todolist', JSON.stringify(this.state.listOfTasks));
+    AsyncStorage.setItem('todolist', JSON.stringify(this.props.listOfTasks));
   }    
   _renderSeparator() {
     return(

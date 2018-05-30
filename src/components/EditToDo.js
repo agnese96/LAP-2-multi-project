@@ -5,7 +5,7 @@ export default class AddToDo extends Component {
   constructor(props){
     super(props)
     const { params } = this.props.navigation.state
-    console.log(params);
+    //console.log(params);
     
     this.state={ 
       title: params.task.title,

@@ -2,17 +2,16 @@ import {INIT, ADD_TODO, TOGGLE_TODO, EDIT_TODO, DELETE_TODO} from './Types';
 
 export function init(list, lastId) {
     return {
-        type: ADD_TODO,
+        type: INIT,
         list,
         lastId
     }
 }
 
-export function addTodo (task, id) {
+export function addTodo (task) {
     return {
         type: ADD_TODO,
         task,
-        id
     }
 }
 
